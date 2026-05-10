@@ -53,35 +53,35 @@ streamlit run app.py
 ### Dashboard
 Real-time overview of all 32,593 students — pass rates, withdrawal rates, risk distribution, engagement heatmap, top at-risk students, model leaderboard, and AI-generated insights.
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](dashboard.png)
 
 ---
 
 ### Student Risk Prediction
 Enter any student profile across 4 dimensions (Demographics, VLE Engagement, Assessment Performance, Registration Timing) and get an instant dropout probability with SHAP feature contributions and personalized recommendations.
 
-![Prediction](screenshots/prediction.png)
+![Prediction](prediction.png)
 
 ---
 
 ### Model Performance
 Full comparison of 9 classifiers + Optuna-tuned variants + Soft-voting Ensemble — visualized as bar charts, ROC curves, and radar plots.
 
-![Model Performance](screenshots/model_perf.png)
+![Model Performance](model_perf.png)
 
 ---
 
 ### EDA & Insights
 Exploratory analysis across all 7 OULAD tables — result distribution, pass rate by education level, gender breakdown, IMD band impact, VLE engagement patterns, and feature importance.
 
-![EDA](screenshots/eda.png)
+![EDA](eda.png)
 
 ---
 
 ### SHAP Explainability
 Global beeswarm plots, single-student waterfall charts, and dependence plots — showing exactly which features drive each prediction.
 
-![SHAP](screenshots/shap.png)
+![SHAP](shap.png)
 
 ---
 
