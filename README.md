@@ -16,44 +16,56 @@
 > **Predict. Explain. Intervene.**
 > An end-to-end AI platform that identifies at-risk university students before it's too late.
 
+<br/>
+
+![Best Model](https://img.shields.io/badge/Best%20Model-XGBoost%20Tuned-EA4335?style=flat-square)
+![AUC](https://img.shields.io/badge/ROC--AUC-97.92%25-00D4FF?style=flat-square)
+![F1](https://img.shields.io/badge/F1%20Weighted-92.01%25-7C3AED?style=flat-square)
+![Accuracy](https://img.shields.io/badge/Accuracy-92.01%25-0F3460?style=flat-square)
+![Students](https://img.shields.io/badge/Students-32%2C593-1a0533?style=flat-square)
+![Models](https://img.shields.io/badge/Models%20Trained-9%20%2B%20Tuning%20%2B%20Ensemble-00D4FF?style=flat-square)
+
 </div>
 
 ---
 
 ## What is UNI-AI?
 
-UNI-AI is a full-stack machine learning platform built on the **OULAD dataset** (32,593 students, 70+ features across 7 tables). It predicts student dropout risk in real time, explains *why* using SHAP, and recommends targeted interventions — all through a polished interactive dashboard.
+UNI-AI is a full-stack machine learning platform built on the **OULAD dataset** (32,593 students, 28 engineered features across 7 tables). It trains and compares **9 classifiers**, tunes the top models with **Optuna**, builds a **soft-voting Ensemble**, and explains every prediction using **SHAP** — all wrapped in a polished interactive Streamlit dashboard.
 
 ---
 
-## Live Demo
+## Run Locally
 
-> Run locally:
 ```bash
+git clone https://github.com/hagerbayoumi11/UNI-AI.git
+cd UNI-AI
 pip install -r requirements.txt
 streamlit run app.py
 ```
+
+> Download OULAD CSV files from [analyse.kmi.open.ac.uk/open-dataset](https://analyse.kmi.open.ac.uk/open-dataset) and place them in the root directory.
 
 ---
 
 ## Platform Overview
 
 ### Dashboard
-Real-time overview of all 32,593 students — pass rates, withdrawal rates, risk distribution, engagement heatmap, and AI-generated insights.
+Real-time overview of all 32,593 students — pass rates, withdrawal rates, risk distribution, engagement heatmap, top at-risk students, model leaderboard, and AI-generated insights.
 
 ![Dashboard](screenshots/dashboard.png)
 
 ---
 
 ### Student Risk Prediction
-Enter any student profile across 4 dimensions (Demographics, VLE Engagement, Assessment Performance, Registration Timing) and get an instant dropout probability with confidence score and personalized recommendations.
+Enter any student profile across 4 dimensions (Demographics, VLE Engagement, Assessment Performance, Registration Timing) and get an instant dropout probability with SHAP feature contributions and personalized recommendations.
 
 ![Prediction](screenshots/prediction.png)
 
 ---
 
 ### Model Performance
-Full comparison of 9 ML models + Optuna-tuned variants + Ensemble — visualized as bar charts, ROC curves, and radar plots.
+Full comparison of 9 classifiers + Optuna-tuned variants + Soft-voting Ensemble — visualized as bar charts, ROC curves, and radar plots.
 
 ![Model Performance](screenshots/model_perf.png)
 
@@ -75,14 +87,22 @@ Global beeswarm plots, single-student waterfall charts, and dependence plots —
 
 ## Model Results
 
-| Rank | Model | AUC | F1 |
-|------|-------|-----|----|
-| 1 | **Ensemble (Top 3)** | **93.1%** | **88.8%** |
-| 2 | LightGBM (Tuned) | 92.4% | 88.2% |
-| 3 | XGBoost (Tuned) | 91.8% | 87.9% |
-| 4 | Random Forest | 85.3% | 83.1% |
-| 5 | Gradient Boosting | 88.7% | 85.4% |
-| 6 | MLP Neural Net | 87.5% | 84.2% |
+| Rank | Model | Accuracy | F1 Weighted | ROC-AUC | CV F1 |
+|------|-------|----------|-------------|---------|-------|
+| 1 | **XGBoost (Tuned)** | **92.01%** | **92.01%** | **97.92%** | **92.16%** |
+| 2 | LightGBM (Tuned) | 91.61% | 91.61% | 97.87% | 91.80% |
+| 3 | Ensemble (Top 3) | — | 88.80% | 93.10% | — |
+| 4 | Gradient Boosting | 91.41% | 91.41% | 97.78% | 91.59% |
+| 5 | XGBoost | 91.09% | 91.09% | 97.73% | 91.28% |
+| 6 | Random Forest | 91.00% | 91.00% | 97.53% | 91.15% |
+| 7 | SVM | 90.98% | 90.99% | 96.84% | 91.04% |
+| 8 | Decision Tree | 90.96% | 90.97% | 97.02% | 91.33% |
+| 9 | LightGBM | 90.75% | 90.76% | 97.64% | 90.91% |
+| 10 | KNN | 89.88% | 89.88% | 96.21% | 89.49% |
+| 11 | Logistic Regression | 89.78% | 89.79% | 95.89% | 89.90% |
+| 12 | MLP Neural Net | 88.56% | 88.56% | 96.45% | 89.24% |
+
+> Tuning: Optuna TPE — 25 trials LightGBM + 25 trials XGBoost
 
 ---
 
@@ -91,24 +111,13 @@ Global beeswarm plots, single-student waterfall charts, and dependence plots —
 | Layer | Tools |
 |-------|-------|
 | Data Processing | Python, Pandas, NumPy |
-| Feature Engineering | 70+ features across 7 OULAD tables |
-| ML Models | LightGBM, XGBoost, Random Forest, SVM, KNN, MLP, Logistic Regression, Gradient Boosting, Decision Tree |
-| Hyperparameter Tuning | Optuna |
+| Feature Engineering | 28 features across 7 OULAD tables |
+| ML Models | XGBoost, LightGBM, Random Forest, Gradient Boosting, SVM, KNN, MLP Neural Net, Logistic Regression, Decision Tree |
+| Hyperparameter Tuning | Optuna TPE (50 trials) |
+| Ensemble | Soft-voting Top-3 + optimal threshold |
 | Explainability | SHAP (Beeswarm, Waterfall, Dependence) |
 | Frontend | Streamlit multi-page app |
 | Visualization | Plotly, Matplotlib, Seaborn |
-
----
-
-## Dataset
-
-**OULAD — Open University Learning Analytics Dataset**
-- 32,593 students
-- 70+ engineered features
-- 7 relational tables
-- Download: [analyse.kmi.open.ac.uk/open-dataset](https://analyse.kmi.open.ac.uk/open-dataset)
-
-> Place CSV files in the root directory before running.
 
 ---
 
@@ -126,6 +135,14 @@ UNI-AI/
     ├── shap_page.py        # SHAP explainability
     └── utils.py            # Shared utilities
 ```
+
+---
+
+## Dataset
+
+**OULAD — Open University Learning Analytics Dataset**
+- 32,593 students | 28 engineered features | 7 relational tables
+- Download: [analyse.kmi.open.ac.uk/open-dataset](https://analyse.kmi.open.ac.uk/open-dataset)
 
 ---
 
